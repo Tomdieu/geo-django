@@ -21,7 +21,7 @@ RUN apt-get update && \
 
 # Copy requirements file and install dependencies
 COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+RUN python -m pip install -requirements.txt
 
 # Copy the Django project into the container
 COPY . /app/
@@ -32,7 +32,7 @@ RUN python -m pip install --upgrade pip
 
 RUN python manage.py makemigrations
 
-Run python ./manage.py shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
+RUN python ./manage.py shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
 
 RUN python manage.py migrate
 
