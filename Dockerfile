@@ -16,6 +16,7 @@ RUN apt-get update && \
     libgeos-dev \
     libproj-dev \
     gdal-bin \
+    libsqlite3-mod-spatialite \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements file and install dependencies
@@ -25,7 +26,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the Django project into the container
 COPY . /app/
 
+RUN python -m pip install --upgrade pip
+
 # Set up the SQLite database
+
+RUN python manage.py makemigrations
+
+Run python ./manage.py shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
+
 RUN python manage.py migrate
 
 # Expose the port the app runs on
